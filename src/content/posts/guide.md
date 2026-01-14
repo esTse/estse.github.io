@@ -1,12 +1,10 @@
 ---
-title: Markdown Extended Features
-published: 2024-05-01
-updated: 2024-11-29
-description: 'Read more about Markdown features in Fuwari'
-image: ''
-tags: [Demo, Example, Markdown, Fuwari]
-category: 'Examples'
-draft: false 
+title: Writing & Formatting Guide
+published: 2025-01-14
+description: Cheat sheet with examples of everything you can use in your posts (Markdown, alerts, code, etc.).
+tags: []
+category: Others
+draft: false
 ---
 
 ## GitHub Repository Cards
