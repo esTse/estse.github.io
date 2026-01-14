@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "CTFs and other things",
 	lang: "en", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	themeColor: {
-		hue: 30, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
+		hue: 45, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: false, // Hide the theme color picker for visitors
 	},
 	banner: {
@@ -20,9 +20,9 @@ export const siteConfig: SiteConfig = {
 		src: "assets/images/banner.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
-			enable: false, // Display the credit text of the banner image
+			enable: true, // Display the credit text of the banner image
 			text: "", // Credit text to be displayed
-			url: "", // (Optional) URL link to the original artwork or artist's page
+			url: "https://www.artstation.com/artwork/n0yW5E", // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	toc: {
@@ -75,7 +75,7 @@ export const profileConfig: ProfileConfig = {
 };
 
 export const licenseConfig: LicenseConfig = {
-	enable: true,
+	enable: false,
 	name: "CC BY-NC-SA 4.0",
 	url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
 };
