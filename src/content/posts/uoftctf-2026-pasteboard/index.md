@@ -187,7 +187,7 @@ sequenceDiagram
     Bot->>Bot: app.js crashes
     Bot->>Bot: handleError ( ) executes
     Bot->>Bot: Load malicious script
-    Bot->>Chromedriver: exploit.js connects
+    Bot->>Chromedriver: exploit.js /session request
     Chromedriver-->>Attacker: RCE Reverse Shell
 </div>
 
