@@ -3,7 +3,7 @@ title: UofTCTF 2026 - Pasteboard Writeup
 published: 2026-01-16
 description: 'Web challenge from UofTCTF 2026, chaining DOM Clobbering and Chromedriver RCE.'
 image: './ss.png'
-tags: [Web]
+tags: [Web, Client-side, DOM Clobbering, Headless Browser]
 category: 'CTF Writeups'
 draft: false 
 lang: ''
@@ -173,6 +173,23 @@ while (y != 60999) {
     y++
 }
 ```
+
+<div class="mermaid">
+sequenceDiagram
+    participant Attacker
+    participant Server
+    participant Bot
+    participant Chromedriver
+    Attacker->>Server: Create Malicious Note
+    Attacker->>Bot: Report Note URL
+    Bot->>Server: Visit Note URL
+    Server-->>Bot: Return Page
+    Bot->>Bot: app.js crashes
+    Bot->>Bot: handleError ( ) executes
+    Bot->>Bot: Load malicious script
+    Bot->>Chromedriver: exploit.js connects
+    Chromedriver-->>Attacker: RCE Reverse Shell
+</div>
 
 ## References
 - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model

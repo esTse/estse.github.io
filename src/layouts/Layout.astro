@@ -191,6 +191,18 @@ const bannerOffset =
 	.navbar-hidden {
 		@apply opacity-0 -translate-y-16
 	}
+
+    .mermaid {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 2rem 0;
+        overflow-x: auto;
+    }
+    .mermaid svg {
+        width: 100%;
+        height: auto;
+    }
 }
 </style>
 
@@ -564,4 +576,137 @@ if (window.swup) {
 } else {
 	document.addEventListener("swup:enable", setup)
 }
+</script>
+
+<script type="module">
+	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    function getThemeConfig() {
+        const isDark = document.documentElement.classList.contains('dark');
+        return isDark ? {
+            theme: 'base',
+            themeVariables: {
+				primaryColor: '#2A2421', 
+				primaryTextColor: '#E8E8E8', 
+				primaryBorderColor: '#FF8C50', 
+				lineColor: '#A89984', 
+				secondaryColor: '#4A3F35', 
+				tertiaryColor: '#1A1614', 
+				mainBkg: '#1A1614', 
+				nodeBorder: '#FF8C50', 
+				clusterBkg: '#2D2420', 
+				clusterBorder: '#A89984', 
+				defaultLinkColor: '#FF8C50', 
+				fontFamily: 'Roboto, sans-serif',
+				fontSize: '16px'
+            }
+        } : {
+            theme: 'base',
+            themeVariables: {
+				primaryColor: '#FFFFFF',
+				primaryTextColor: '#2D3436',
+				primaryBorderColor: '#FF8C50',
+				lineColor: '#4A3F35',
+				secondaryColor: '#F5F0EB',
+				tertiaryColor: '#EBE3DB',
+				mainBkg: '#F2E9E1',
+				nodeBorder: '#FF8C50',
+				clusterBkg: '#EBE3DB',
+				clusterBorder: '#D6C7B8',
+				defaultLinkColor: '#FF8C50',
+				fontFamily: 'Roboto, sans-serif',
+				fontSize: '16px'
+}
+        };
+    }
+
+	// Initialize with current theme
+	mermaid.initialize({ 
+		startOnLoad: false, 
+		...getThemeConfig()
+	});
+	
+	async function renderMermaid() {
+	  const graphs = document.querySelectorAll('.mermaid');
+	  if (graphs.length > 0) {
+        // Re-initialize mermaid with current theme before rendering
+        // Important: check the class right now
+        mermaid.initialize({
+            startOnLoad: false,
+            ...getThemeConfig()
+        });
+        
+		graphs.forEach(graph => {
+            // Remove data-processed attribute to force re-render if needed
+            // But usually we need to clear the content if we want to re-render.
+            // However, mermaid.run processes nodes.
+            // If the node already has content (SVG), mermaid might skip it or append.
+            // For theme switch to work, we might need to reset the graph content to its source text?
+            // But we don't have the source text easily if it was replaced.
+            // Actually, mermaid keeps the source in 'data-original-text' attribute if configured?
+            // Or we rely on Swup page load which re-inserts the original HTML.
+            
+            // If this is a fresh page load (via Swup or initial), the div contains the text source.
+            if (graph.getAttribute('data-processed')) return;
+		});
+		await mermaid.run({ nodes: graphs });
+	  }
+	}
+  
+	renderMermaid();
+  
+	if (window.swup) {
+		window.swup.hooks.on('page:view', () => {
+            // Wait for DOM update
+            renderMermaid();
+        });
+	} else {
+		document.addEventListener('swup:enable', () => {
+			window.swup.hooks.on('page:view', renderMermaid);
+		});
+	}
+
+    // Listen for theme changes on the html element
+    const observer = new MutationObserver(async (mutations) => {
+        for (const mutation of mutations) {
+            if (mutation.attributeName === 'class') {
+                // Only reload if the theme change was triggered by user interaction (toggle)
+                // We can check if the 'dark' class state actually changed from what we initialized with?
+                // Or use a flag/sessionStorage to prevent loop?
+                
+                // Simple debounce/throttle might not be enough if the page reload triggers it again.
+                // But page reload shouldn't trigger mutation observer immediately unless script adds class AFTER load.
+                // The script in head adds class BEFORE body load.
+                
+                // Let's try to reload but checking if we just reloaded?
+                // We can use sessionStorage.
+                
+                const isDark = document.documentElement.classList.contains('dark');
+                const storedTheme = localStorage.getItem('theme');
+                
+                // If the class matches the stored theme, it might be the initial load setting it?
+                // But the observer runs after load.
+                
+                // Let's try to detect if it's a REAL change.
+                // We can store the last known state.
+                if (window.lastThemeState === undefined) {
+                    window.lastThemeState = isDark;
+                    return; // Ignore the first detection if it happens on attach
+                }
+                
+                if (window.lastThemeState !== isDark) {
+                    window.lastThemeState = isDark;
+                    // Theme actually changed. Reload to update Mermaid.
+                    window.location.reload();
+                }
+            }
+        }
+    });
+    
+    // Initialize state
+    window.lastThemeState = document.documentElement.classList.contains('dark');
+    
+    observer.observe(document.documentElement, { attributes: true });
+    // But mutation observer should catch the class change on <html>
+
 </script>
