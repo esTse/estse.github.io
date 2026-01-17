@@ -42,6 +42,9 @@ if (!banner || typeof banner !== "string" || banner.trim() === "") {
 	banner = siteConfig.banner.src;
 }
 
+// Keep original banner for OG image before overriding for visual banner
+const ogImage = new URL(banner, Astro.url).href;
+
 // TODO don't use post cover as banner for now
 banner = siteConfig.banner.src;
 
@@ -98,6 +101,8 @@ const bannerOffset =
 		<meta property="twitter:url" content={Astro.url}>
 		<meta name="twitter:title" content={pageTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
+		<meta name="twitter:image" content={ogImage}>
+		<meta property="og:image" content={ogImage}>
 
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
