@@ -79,7 +79,7 @@ I post CTF Writeups and things I learn so I don't have to Google them again. If 
                              track.style.paddingLeft = '0';
                              track.style.textAlign = 'center';
                              track.style.width = '100%';
-                             track.style.fontSize = '1.5rem';
+                             track.style.fontSize = '1rem';
                              track.innerHTML = "✨ To Be Continued... 🐒 ✨";
                           }, 15000);
                        }, 2000);
