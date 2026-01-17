@@ -3,6 +3,7 @@ title: UofTCTF 2026 - Pasteboard Writeup
 published: 2026-01-16
 description: 'Web challenge from UofTCTF 2026, chaining DOM Clobbering and Chromedriver RCE.'
 image: './ss.png'
+thumbnail: './UofT_CTF_Logo_Redesigned.png'
 tags: [Web, Client-side, DOM Clobbering, Headless Browser]
 category: 'CTF Writeups'
 draft: false 
