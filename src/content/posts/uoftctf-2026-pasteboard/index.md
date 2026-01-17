@@ -185,3 +185,4 @@ while (y != 60999) {
 - https://domclob.xyz/domc_wiki/
 - https://splitline.github.io/DOM-Clobber3r/
 - https://book.jorianwoltjer.com/web/client-side/headless-browsers#chromedriver
+- https://issuetracker.google.com/issues/40052697
