@@ -2,7 +2,7 @@
 I post CTF Writeups and things I learn so I don't have to Google them again. If you identify any error, feel free to contact me via X. I'm still learning, so it would be great to know. Also, I might post about other non-computer related things like travels, food...
 
 <div style="overflow: hidden; white-space: nowrap;">
-  <div id="monkey-track" style="display: inline-block; animation: monkey-scroll 8s linear infinite; animation-delay: 2s; padding-left: 100%; font-size: 3rem; cursor: pointer; white-space: pre;"><span style="font-size: 1.5rem; vertical-align: middle;">🍌</span>                             🐒</div>
+  <div id="monkey-track" style="display: inline-block; animation: monkey-scroll 4s linear infinite; animation-delay: 2s; padding-left: 100%; font-size: 3rem; cursor: pointer; white-space: pre;"><span style="font-size: 1.5rem; vertical-align: middle;">🍌</span>                             🐒</div>
 </div>
 <style>
   @keyframes monkey-scroll {
@@ -63,13 +63,13 @@ I post CTF Writeups and things I learn so I don't have to Google them again. If 
                           track.style.textAlign = '';
                           track.style.width = '';
                           track.style.height = '';
-                          track.style.animation = 'monkey-scroll 8s linear infinite';
+                          track.style.animation = 'monkey-scroll 4s linear infinite';
                           setTimeout(() => {
                              if (state === 6) {
                                 heli = true;
                                 track.style.animation = 'none';
                                 track.offsetHeight; 
-                                track.style.animation = 'monkey-scroll 8s linear infinite';
+                                track.style.animation = 'monkey-scroll 4s linear infinite';
                                 track.innerHTML = "🐒💨" + " ".repeat(gap) + "<span style='position:relative;display:inline-block;'>🚓<span style='position:absolute;top:-1.2em;right:-0.5em;'>🚁</span></span>";
                              }
                           }, 5000);
@@ -79,7 +79,7 @@ I post CTF Writeups and things I learn so I don't have to Google them again. If 
                              track.style.paddingLeft = '0';
                              track.style.textAlign = 'center';
                              track.style.width = '100%';
-                             track.style.fontSize = '1rem';
+                             track.style.fontSize = '1.5rem';
                              track.innerHTML = "✨ To Be Continued... 🐒 ✨";
                           }, 15000);
                        }, 2000);
