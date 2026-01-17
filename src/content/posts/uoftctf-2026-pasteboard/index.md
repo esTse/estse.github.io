@@ -147,7 +147,8 @@ If we carefully analyze `app.js`, we can see how the `handleError()` function in
 ```
 At this point, we have achieved executable JS code injection. But now what? How on earth do we extract the `FLAG` via JS? I explored several paths involving iframes and local file access, hoping that an automated environment might have exposed interfaces or weakened configurations... And it turns out it did!
 
-The vulnerability wasn't in the browser's sandbox itself, but in the WebDriver orchestration. To automate the session, the system was running ChromeDriver, which by default listens on a random port (32768-60999). Specifically, the `/session` endpoint allows us to specify the binary and arguments for the "browser". In this case, instead of a browser, we will point it to the Python interpreter binary and pass a reverse shell as arguments achieving RCE!  
+The vulnerability wasn't in the browser's sandbox itself, but in the WebDriver orchestration. To automate the session, the system was running ChromeDriver, which by default listens on a random port (32768-60999). Specifically, the `/session` endpoint allows us to specify the binary and arguments for the "browser". In this case, instead of a browser, we will point it to the Python interpreter binary and pass a reverse shell as arguments achieving RCE! 
+ 
 **exploit.js:**
 ```javascript
 y = 32768
