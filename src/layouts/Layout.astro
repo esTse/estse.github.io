@@ -629,26 +629,25 @@ if (window.swup) {
 	async function renderMermaid() {
 	  const graphs = document.querySelectorAll('.mermaid');
 	  if (graphs.length > 0) {
-        // Re-initialize mermaid with current theme before rendering
-        // Important: check the class right now
+        graphs.forEach(graph => {
+            // Store original content if not already stored
+            if (!graph.hasAttribute('data-original-content')) {
+                graph.setAttribute('data-original-content', graph.textContent);
+            }
+            
+            // If we are re-rendering (theme change), restore original content
+            if (graph.getAttribute('data-processed')) {
+                graph.removeAttribute('data-processed');
+                graph.textContent = graph.getAttribute('data-original-content');
+            }
+        });
+
+        // Initialize mermaid with current theme
         mermaid.initialize({
             startOnLoad: false,
             ...getThemeConfig()
         });
         
-		graphs.forEach(graph => {
-            // Remove data-processed attribute to force re-render if needed
-            // But usually we need to clear the content if we want to re-render.
-            // However, mermaid.run processes nodes.
-            // If the node already has content (SVG), mermaid might skip it or append.
-            // For theme switch to work, we might need to reset the graph content to its source text?
-            // But we don't have the source text easily if it was replaced.
-            // Actually, mermaid keeps the source in 'data-original-text' attribute if configured?
-            // Or we rely on Swup page load which re-inserts the original HTML.
-            
-            // If this is a fresh page load (via Swup or initial), the div contains the text source.
-            if (graph.getAttribute('data-processed')) return;
-		});
 		await mermaid.run({ nodes: graphs });
 	  }
 	}
@@ -657,7 +656,6 @@ if (window.swup) {
   
 	if (window.swup) {
 		window.swup.hooks.on('page:view', () => {
-            // Wait for DOM update
             renderMermaid();
         });
 	} else {
@@ -666,38 +664,20 @@ if (window.swup) {
 		});
 	}
 
-    // Listen for theme changes on the html element
+    // Listen for theme changes to re-render diagrams
     const observer = new MutationObserver(async (mutations) => {
         for (const mutation of mutations) {
             if (mutation.attributeName === 'class') {
-                // Only reload if the theme change was triggered by user interaction (toggle)
-                // We can check if the 'dark' class state actually changed from what we initialized with?
-                // Or use a flag/sessionStorage to prevent loop?
-                
-                // Simple debounce/throttle might not be enough if the page reload triggers it again.
-                // But page reload shouldn't trigger mutation observer immediately unless script adds class AFTER load.
-                // The script in head adds class BEFORE body load.
-                
-                // Let's try to reload but checking if we just reloaded?
-                // We can use sessionStorage.
-                
                 const isDark = document.documentElement.classList.contains('dark');
-                const storedTheme = localStorage.getItem('theme');
-                
-                // If the class matches the stored theme, it might be the initial load setting it?
-                // But the observer runs after load.
-                
-                // Let's try to detect if it's a REAL change.
-                // We can store the last known state.
                 if (window.lastThemeState === undefined) {
                     window.lastThemeState = isDark;
-                    return; // Ignore the first detection if it happens on attach
+                    return;
                 }
                 
                 if (window.lastThemeState !== isDark) {
                     window.lastThemeState = isDark;
-                    // Theme actually changed. Reload to update Mermaid.
-                    window.location.reload();
+                    // Re-render Mermaid diagrams dynamically without reload
+                    renderMermaid();
                 }
             }
         }
