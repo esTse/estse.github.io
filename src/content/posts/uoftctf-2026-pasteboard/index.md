@@ -174,6 +174,8 @@ while (y != 60999) {
 }
 ```
 
+The attack flow can be visualized as follows:
+
 <div class="mermaid">
 sequenceDiagram
     participant Attacker
@@ -190,6 +192,10 @@ sequenceDiagram
     Bot->>Chromedriver: exploit.js /session request
     Chromedriver-->>Attacker: RCE Reverse Shell
 </div>
+
+By chaining these vulnerabilities, we successfully bypass the CSP and turn a client-side injection into full Remote Code Execution on the server infrastructure.
+
+I hope you enjoyed reading this post and see you in the next CTF!
 
 ## References
 - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
